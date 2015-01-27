@@ -234,19 +234,22 @@
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    [self setControlState:UIControlStateHighlighted];
+    if (!self.selected) {
+       [self setControlState:UIControlStateHighlighted];
+    }
+    
 }
 
 - (void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesCancelled:touches withEvent:event];
-    [self setControlState:UIControlStateNormal];
+    [self setControlState:self.selected ? UIControlStateSelected : UIControlStateNormal];
 }
 
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-    [self setControlState:UIControlStateNormal];
+    [self setControlState:self.selected ? UIControlStateSelected : UIControlStateNormal];
     
     // Calling action block if it exists
     if(self.actionBlock){
@@ -350,6 +353,15 @@
 
 #pragma  mark - Setters
 
+-(void)setSelected:(BOOL)selected{
+    [super setSelected:selected];
+    if (selected) {
+        [self setControlState:UIControlStateSelected];
+    }else{
+        [self setControlState:UIControlStateNormal];
+    }
+}
+
 -(void)setHorizontalMargin:(CGFloat)margin
 {
     _horizontalmargin = @(margin);
@@ -396,8 +408,11 @@
 
 -(void)setIcon:(NSString*)icon forUIControlState:(UIControlState)state
 {
-    self.icons[@(state)]=icon;
-    [self updateButtonFormat];
+    if (icon) {
+        self.icons[@(state)]=icon;
+        [self updateButtonFormat];
+    }
+    
 }
 
 -(void)setControlState:(UIControlState)controlState
