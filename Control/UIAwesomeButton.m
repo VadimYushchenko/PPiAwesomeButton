@@ -394,6 +394,12 @@
     [self updateButtonFormat];
 }
 
+-(void)setIcon:(NSString*)icon forUIControlState:(UIControlState)state
+{
+    self.backgroundColors[@(state)]=icon;
+    [self updateButtonFormat];
+}
+
 -(void)setControlState:(UIControlState)controlState
 {
     _controlState = controlState;

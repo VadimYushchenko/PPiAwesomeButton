@@ -56,7 +56,9 @@ typedef void (^block)();
 
 - (void)setBackgroundColor:(UIColor*)color
          forUIControlState:(UIControlState)state;
+
 -(void)setIcon:(NSString*)icon forUIControlState:(UIControlState)state;
+
 - (void)setRadius:(CGFloat)radius;
 
 - (void)setBorderWidth:(CGFloat)width
