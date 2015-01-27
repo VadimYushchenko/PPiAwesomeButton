@@ -16,7 +16,7 @@ static char backgroundColorsKey;
 static char textAttributesKey;
 static char isAwesomeKey;
 static char separationKey;
-
+static char iconsKey;
 
 @implementation UIButton (PPiAwesome)
 
@@ -209,8 +209,29 @@ static char separationKey;
 
     [self updateButtonFormatForUIControlState:UIControlStateNormal];
 }
+
 - (NSMutableDictionary*) backgroundColors {
     return objc_getAssociatedObject(self, &backgroundColorsKey);
+}
+
+
+-(void)setIcon:(NSString*)icon forUIControlState:(UIControlState)state{
+    
+    NSMutableDictionary *backgroundColors=[self backgroundColors];
+    if(!backgroundColors){
+        backgroundColors=[[NSMutableDictionary alloc] init];
+        objc_setAssociatedObject(self, &iconsKey,backgroundColors, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    
+    //Setting attributes
+    if(icon)
+        backgroundColors[@(state)]=icon;
+    
+    [self updateButtonFormatForUIControlState:UIControlStateNormal];
+}
+
+- (NSMutableDictionary*) icons {
+    return objc_getAssociatedObject(self, &iconsKey);
 }
 
 

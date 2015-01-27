@@ -49,12 +49,14 @@ typedef void (^block)();
 
 - (void)setIconImage:(UIImage *)icon;
 
+- (void)setSelectedIcon:(NSString*)selectedIcon;
+
 - (void)setAttributes:(NSDictionary*)attributes
    forUIControlState:(UIControlState)state;
 
 - (void)setBackgroundColor:(UIColor*)color
          forUIControlState:(UIControlState)state;
-
+-(void)setIcon:(NSString*)icon forUIControlState:(UIControlState)state;
 - (void)setRadius:(CGFloat)radius;
 
 - (void)setBorderWidth:(CGFloat)width

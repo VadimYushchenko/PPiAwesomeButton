@@ -13,9 +13,11 @@
 @property (nonatomic) UIControlState controlState;
 @property (nonatomic,strong) NSMutableDictionary *attributes;
 @property (nonatomic,strong) NSMutableDictionary *backgroundColors;
+@property (nonatomic,strong) NSMutableDictionary *icons;
 @property (nonatomic,strong) NSNumber *horizontalmargin;
 @property (nonatomic,strong) NSString *buttonText;
 @property (nonatomic,strong) NSString *icon;
+@property (nonatomic,strong) NSString *selectedIcon;
 @property (nonatomic,strong) UIImage *iconImage;
 @property (nonatomic,strong) UIImageView *iconImageView;
 @property (nonatomic,strong) UILabel *iconLabel, *textLabel;
@@ -211,6 +213,8 @@
         [self.textLabel setText:@""];
     }
     
+  self.icon = [self iconForState:self.controlState];
+    
     if(self.icon){
         [self.iconLabel setAttributedText:[[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:self.icon] attributes:[self iconAttributesForState:self.controlState]]];
         [self.iconLabel setBackgroundColor:[UIColor clearColor]];
@@ -263,6 +267,12 @@
 {
     if(!_backgroundColors) _backgroundColors = [NSMutableDictionary new];
     return _backgroundColors;
+}
+
+-(NSMutableDictionary*)icons
+{
+    if(!_icons) _icons = [NSMutableDictionary new];
+    return _icons;
 }
 
 -(UILabel*)textLabel
@@ -321,6 +331,13 @@
 {
     if(self.backgroundColors[@(state)]) return self.backgroundColors[@(state)];
     else return self.backgroundColors[@(UIControlStateNormal)];
+    
+}
+
+-(NSString*)iconForState:(UIControlState)state
+{
+    if(self.icons[@(state)]) return self.icons[@(state)];
+    else return self.icons[@(UIControlStateNormal)];
     
 }
 
@@ -388,6 +405,7 @@
     _buttonText = text;
     _icon = icon;
     _iconImage = nil;
+    [self setIcon:_icon forUIControlState:UIControlStateNormal];
     [self updateButtonContent];
 }
 
@@ -418,6 +436,13 @@
     _iconImage = nil;
     [self updateButtonContent];
 }
+
+-(void)setSelectedIcon:(NSString *)selectedIcon{
+    _selectedIcon = selectedIcon;
+    [self setIcon:selectedIcon forUIControlState:UIControlStateSelected];
+    [self updateButtonContent];
+}
+
 -(void)setIconPosition:(IconPosition)iconPosition
 {
     _iconPosition = iconPosition;

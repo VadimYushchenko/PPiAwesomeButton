@@ -48,6 +48,8 @@ typedef enum {
 - (void)setBackgroundColor:(UIColor*)color
          forUIControlState:(UIControlState)state;
 
+-(void)setIcon:(NSString*)icon forUIControlState:(UIControlState)state;
+
 - (void)setIconPosition:(IconPosition)position;
 
 - (void)setButtonText:(NSString*)text;
