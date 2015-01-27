@@ -213,10 +213,10 @@
         [self.textLabel setText:@""];
     }
     
-  self.icon = [self iconForState:self.controlState];
+   
     
     if(self.icon){
-        [self.iconLabel setAttributedText:[[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:self.icon] attributes:[self iconAttributesForState:self.controlState]]];
+        [self.iconLabel setAttributedText:[[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:[self iconForState:self.controlState]] attributes:[self iconAttributesForState:self.controlState]]];
         [self.iconLabel setBackgroundColor:[UIColor clearColor]];
     }
     else{
