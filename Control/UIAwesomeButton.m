@@ -216,7 +216,15 @@
    
     
     if(self.icon){
-        [self.iconLabel setAttributedText:[[NSAttributedString alloc] initWithString:[NSString fontAwesomeIconStringForIconIdentifier:[self iconForState:self.controlState]] attributes:[self iconAttributesForState:self.controlState]]];
+        NSDictionary *attributes = [self iconAttributesForState:self.controlState];
+        NSString *icon = nil;
+        if (attributes[@"IconFont"]) {
+            icon = [self iconForState:self.controlState];
+        }else {
+            icon = [NSString fontAwesomeIconStringForIconIdentifier:[self iconForState:self.controlState]];
+        }
+        
+        [self.iconLabel setAttributedText:[[NSAttributedString alloc] initWithString:icon attributes:[self iconAttributesForState:self.controlState]]];
         [self.iconLabel setBackgroundColor:[UIColor clearColor]];
     }
     else{
