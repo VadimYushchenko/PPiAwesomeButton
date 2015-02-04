@@ -42,9 +42,9 @@
 {
     self=[super initWithFrame:frame];
     if(self){
+        [self setIconPosition:position];
         [self setIcon:icon andButtonText:text];
         [self setAttributes:attributes forUIControlState:UIControlStateNormal];
-        [self setIconPosition:position];
         [self setTextAlignment:NSTextAlignmentCenter];
         [self setControlState:UIControlStateNormal];
     }
@@ -101,7 +101,7 @@
         element1 = self.textLabel;
         element2 = iconElement;
     }
-
+    
     //Horizontal layout
     [self centerHorizontally:element1 element2:element2];
     
@@ -151,8 +151,8 @@
         if (self.iconPosition == IconPositionBottom) {
             x = 0;
             element2Height = [((UILabel*)element2).text sizeWithAttributes:@{NSFontAttributeName:((UILabel*)element2).font}].height;
-            [element1 setFrame:CGRectMake(x, 0, element1.frame.size.width,height - element2Height)];
-            [element2 setFrame:CGRectMake(x, CGRectGetHeight(element1.bounds), element2.frame.size.width, element1Height)];
+            [element1 setFrame:CGRectMake(x, 0, element1.frame.size.width,height)];
+            [element2 setFrame:CGRectMake(x, CGRectGetHeight(element1.bounds)-element2Height+self.separation, element2.frame.size.width, element2Height)];
             
         }else {
         
