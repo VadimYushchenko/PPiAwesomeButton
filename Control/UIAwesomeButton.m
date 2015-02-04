@@ -101,13 +101,7 @@
         element1 = self.textLabel;
         element2 = iconElement;
     }
-    
-    element2.layer.borderColor = [UIColor yellowColor].CGColor;
-    element2.layer.borderWidth = 2.f;
 
-    element1.layer.borderColor = [UIColor greenColor].CGColor;
-    element1.layer.borderWidth = 2.f;
-    
     //Horizontal layout
     [self centerHorizontally:element1 element2:element2];
     
