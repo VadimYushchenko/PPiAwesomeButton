@@ -97,10 +97,16 @@
     UIView *iconElement = self.icon? self.iconLabel : self.iconImageView.image ? self.iconImageView : nil;
     UIView *element1 = iconElement;
     UIView *element2 = self.textLabel;
-    if(self.iconPosition == IconPositionRight){
+    if(self.iconPosition == IconPositionRight || self.iconPosition == IconPositionBottom){
         element1 = self.textLabel;
         element2 = iconElement;
     }
+    
+    element2.layer.borderColor = [UIColor yellowColor].CGColor;
+    element2.layer.borderWidth = 2.f;
+
+    element1.layer.borderColor = [UIColor greenColor].CGColor;
+    element1.layer.borderWidth = 2.f;
     
     //Horizontal layout
     [self centerHorizontally:element1 element2:element2];
@@ -129,15 +135,36 @@
 
 - (void)centerVertically:(UIView *)element1 element2:(UIView *)element2 margin:(float)margin
 {
+    CGFloat element1Height = 0;
+    CGFloat element2Height = 0;
+    
     if ([element1 isKindOfClass:[UILabel class]]) {
-        [element1 setFrame:CGRectMake(element1.frame.origin.x, 0, element1.frame.size.width, self.frame.size.height)];
+        CGFloat x = element1.frame.origin.x;
+        element1Height = CGRectGetHeight(self.bounds);
+        if (self.iconPosition == IconPositionBottom) {
+            x = 0;
+            element1Height = [((UILabel*)element1).text sizeWithAttributes:@{NSFontAttributeName:((UILabel*)element1).font}].height;
+        }
+        [element1 setFrame:CGRectMake(x, 0, element1.frame.size.width, element1Height)];
         
     }
     else if ([element1 isKindOfClass:[UIImageView class]]) {
         [element1 setFrame:CGRectMake(element1.frame.origin.x, self.frame.size.height/2 - element1.frame.size.height/2, element1.frame.size.width, element1.frame.size.height)];
     }
     if ([element2 isKindOfClass:[UILabel class]]) {
-        [element2 setFrame:CGRectMake(element2.frame.origin.x, 0, element2.frame.size.width, self.frame.size.height)];
+        CGFloat x = element2.frame.origin.x;
+        CGFloat height = CGRectGetHeight(self.frame);
+        if (self.iconPosition == IconPositionBottom) {
+            x = 0;
+            element2Height = [((UILabel*)element2).text sizeWithAttributes:@{NSFontAttributeName:((UILabel*)element2).font}].height;
+            [element1 setFrame:CGRectMake(x, 0, element1.frame.size.width,height - element2Height)];
+            [element2 setFrame:CGRectMake(x, CGRectGetHeight(element1.bounds), element2.frame.size.width, element1Height)];
+            
+        }else {
+        
+        [element2 setFrame:CGRectMake(x, 0, element2.frame.size.width, height)];
+            
+        }
         
     }
     else if ([element2 isKindOfClass:[UIImageView class]]) {
@@ -152,8 +179,13 @@
     CGFloat element2Width = 0;
     if([element1 isKindOfClass:[UILabel class]])
     {
+        if (self.iconPosition == IconPositionBottom) {
+            [(UILabel*)element1 setTextAlignment:NSTextAlignmentCenter];
+            element1Width = CGRectGetWidth(self.bounds);
+        } else {
         [(UILabel*)element1 setTextAlignment:NSTextAlignmentRight];
         element1Width = [((UILabel*)element1).text sizeWithAttributes:@{NSFontAttributeName:((UILabel*)element1).font}].width;
+        }
     }
     else if([element1 isKindOfClass:[UIImageView class]])
     {
@@ -166,8 +198,13 @@
     }
     if([element2 isKindOfClass:[UILabel class]])
     {
+        if (self.iconPosition == IconPositionBottom) {
+            [(UILabel*)element2 setTextAlignment:NSTextAlignmentCenter];
+            element2Width = CGRectGetWidth(self.bounds);
+        } else {
         [(UILabel*)element2 setTextAlignment:NSTextAlignmentLeft];
         element2Width = [((UILabel*)element2).text sizeWithAttributes:@{NSFontAttributeName:((UILabel*)element2).font}].width;
+        }
         
     }
     else if([element2 isKindOfClass:[UIImageView class]])
@@ -182,8 +219,15 @@
     
     if(self.textAligment == NSTextAlignmentCenter){
         CGFloat originX = (self.frame.size.width - (element1Width+ self.separation +element2Width))/2;
-        [element1 setFrame:CGRectMake(originX, element1.frame.origin.y, element1Width, element1.frame.size.height)];
-        [element2 setFrame:CGRectMake(originX + element1Width + self.separation, element2.frame.origin.y, element2Width, element2.frame.size.height)];
+        if (self.iconPosition == IconPositionBottom) {
+            originX = (self.frame.size.width - (element1Width+element2Width))/2;
+            [element1 setFrame:CGRectMake(originX, element1.frame.origin.y, element1Width, element1.frame.size.height)];
+            [element2 setFrame:CGRectMake(originX, element2.frame.origin.y, element2Width, element2.frame.size.height)];
+        }else {
+            [element1 setFrame:CGRectMake(originX, element1.frame.origin.y, element1Width, element1.frame.size.height)];
+            [element2 setFrame:CGRectMake(originX + element1Width + self.separation, element2.frame.origin.y, element2Width, element2.frame.size.height)];
+        }
+        
     }
     else if (self.textAligment == NSTextAlignmentLeft){
         [element1 setFrame:CGRectMake(self.horizontalmargin.intValue, element1.frame.origin.y, element1Width, element1.frame.size.height)];

@@ -14,6 +14,7 @@
 typedef enum {
     IconPositionRight,
     IconPositionLeft,
+    IconPositionBottom,
 } IconPosition;
 
 @interface UIButton (PPiAwesome)
